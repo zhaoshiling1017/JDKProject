@@ -15,6 +15,14 @@ public class Main {
 	private static final String DOWNLOAD_DIR = System.getProperty("user.dir")+"/download/";
 	private static final String DONE_DIR = System.getProperty("user.dir")+"/done/";
 	public static void main(String[] args) {
+		File doneDir = new File(DONE_DIR);
+		if(!doneDir.exists()){
+			doneDir.mkdir();
+		}
+		File downloadDir = new File(DOWNLOAD_DIR);
+		if(!downloadDir.exists()){
+			downloadDir.mkdir();
+		}
 		Main main = new Main();
 		String validateCode = main.getValidateCode(args[0]);
 		logger.info(String.format("最终生成的验证码<%s>, 长度<%s>, ", validateCode,validateCode.length()));
