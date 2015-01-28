@@ -1,10 +1,14 @@
 package com.unicss.utils;
 
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.OutputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -29,6 +33,9 @@ public class ImageProcess {
 	private String url;
 	public ImageProcess(String url){
 		this.url = url;
+	}
+	public ImageProcess(){
+		
 	}
 	/**
 	 * 下载验证码
@@ -68,7 +75,7 @@ public class ImageProcess {
            if (oldfile.exists()) { //文件存在时 
                InputStream inStream = new FileInputStream(oldPath); //读入原文件 
                FileOutputStream fs = new FileOutputStream(newPath); 
-               byte[] buffer = new byte[1444]; 
+               byte[] buffer = new byte[2048]; 
                while ( (byteread = inStream.read(buffer)) != -1) { 
                    fs.write(buffer, 0, byteread); 
                } 
@@ -79,4 +86,35 @@ public class ImageProcess {
            logger.error("复制单个文件操作出错",e); 
        } 
    } 
+   /**
+    * 抓取网页信息
+    */
+   public void captureHtml(String strURL) throws Exception {
+		//String strURL = "http://ip.chinaz.com/?IP=" + ip;
+		URL url = new URL(strURL);
+		HttpURLConnection httpConn = (HttpURLConnection) url.openConnection();
+		InputStreamReader input = new InputStreamReader(httpConn
+				.getInputStream(), "utf-8");
+		BufferedReader bufReader = new BufferedReader(input);
+		String line = "";
+		StringBuilder contentBuf = new StringBuilder();
+		while ((line = bufReader.readLine()) != null) {
+			contentBuf.append(line);
+		}
+		String buf = contentBuf.toString();
+		System.out.println(buf.toString());
+		/*int beginIx = buf.indexOf("查询结果[");
+		int endIx = buf.indexOf("上面三项依次显示的是");
+		String result = buf.substring(beginIx, endIx);
+		System.out.println("captureHtml()的结果：\n" + result);*/
+	}
+   
+   public static void main(String[] args) {
+	   ImageProcess process = new ImageProcess();
+	   try {
+		process.captureHtml("https://passport.csdn.net/account/register");
+	} catch (Exception e) {
+		e.printStackTrace();
+	}
+   }
 }

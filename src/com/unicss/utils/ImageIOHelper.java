@@ -67,7 +67,7 @@ public class ImageIOHelper {
 			writer.dispose();
 			reader.dispose();
 		} catch (Exception exc) {
-			logger.error("异常:", exc);
+			logger.error(exc);
 		}
 		return tempFile;
 	}
@@ -92,7 +92,7 @@ public class ImageIOHelper {
 			ios.close();
 			writer.dispose();
 		} catch (Exception exc) {
-			logger.error("异常:", exc);
+			logger.error(exc);
 		}
 		return tempFile;
 	}
@@ -125,9 +125,9 @@ public class ImageIOHelper {
 
 			reader.dispose();
 		} catch (IOException ioe) {
-			System.err.println(ioe.getMessage());
+			logger.error(ioe);
 		} catch (Exception e) {
-			System.err.println(e.getMessage());
+			logger.error(e);
 		}
 
 		return al;
